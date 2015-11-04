@@ -1,8 +1,8 @@
 # Stemmer using Morpheus of the Perseus Hopper
 
-setwd("~/OneDrive/GithubProjects/untitled folder")
+setwd("~/OneDrive/GithubProjects/LatParser")
 
-corpus_words <- readLines("nepos-wordlist.txt")
+corpus_words <- readLines("godfrey-wordlist.txt")
 
 corpus_words <- gsub("[[:punct:]]", " ", corpus_words)  # replace punctuation with space
 corpus_words <- gsub("[[:cntrl:]]", " ", corpus_words)  # replace control characters with space
@@ -14,6 +14,7 @@ corpus_words <- gsub("^[[:space:]]+", "", corpus_words) # remove whitespace at b
 
 corpus_words <- unique(unlist(corpus_words))
 corpus_words <- sort(corpus_words)
+corpus_words <- tolower(corpus_words)
 
 parsing2 <- function(x){
   URL <- paste("https://services.perseids.org/bsp/morphologyservice/analysis/word?word=", x, "&lang=lat&engine=morpheuslat", sep = "")
@@ -95,7 +96,12 @@ parsing <- function(x){
 
 #stemming
 
+t1 <- Sys.time()
+
 stem_dictionary <- sapply(corpus_words, parsing)
+
+t2 <- Sys.time()
+parsing_time <- t2 - t1
 
 # Evaluate result
 
